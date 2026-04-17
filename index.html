@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ne" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta name="description" content="शास्त्री कक्षा पोर्टल — नेपाली, संस्कृत, ज्योतिष र अङ्ग्रेजी">
+  <meta name="theme-color" content="#FF8C35">
+  <title>शास्त्री कक्षा</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Prevent flash of wrong theme -->
+  <script>
+    (function(){
+      var t = localStorage.getItem('sp_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+      document.documentElement.style.colorScheme = t;
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg-mesh"></div>
+
+<!-- ══════ HEADER ══════ -->
+<header class="site-header">
+  <div class="header-left">
+    <div class="logo-pill">
+      <div class="logo-icon">📚</div>
+      <span class="logo-text">शास्त्री कक्षा</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="hdr-btn" id="themeBtn" title="Night/Day Mode">🌙</button>
+    <button class="hdr-btn" onclick="go('notes')" title="नोट">📝</button>
+  </div>
+</header>
+
+<!-- ══════ DATETIME ══════ -->
+<div class="datetime-island">
+  <div class="datetime-pill">
+    <span class="dt-time" id="dtTime">--:--:--</span>
+    <span class="dt-sep">|</span>
+    <span class="dt-date" id="dtDate">...</span>
+    <span class="dt-sep">|</span>
+    <span class="dt-bs" id="dtBS">...</span>
+  </div>
+</div>
+
+<!-- ══════ TICKER ══════ -->
+<div class="news-ticker">
+  <div class="ticker-badge">📢 समाचार</div>
+  <div class="ticker-scroll">
+    <div class="ticker-inner" id="tickerInner">
+      <span class="ticker-item">स्वागत छ शास्त्री पोर्टलमा!</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ PAGES ══════ -->
+
+<!-- HOME -->
+<div id="p-home" class="page on">
+  <div class="search-wrap">
+    <div class="search-glass">
+      <span class="search-ico">🔍</span>
+      <input id="searchInp" type="search" placeholder="किताब वा विषय खोज्नुस्..." autocomplete="off">
+      <button class="search-clear" id="searchClr">✕</button>
+      <div class="search-dropdown" id="searchDrop"></div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="sec-head s1">
+      <div class="sec-title">वर्षहरू</div>
+    </div>
+    <div class="years-stack" id="yearsGrid">
+      <div class="spin-wrap"><div class="spinner"></div></div>
+    </div>
+
+    <div class="news-section" style="margin-top:22px">
+      <div class="sec-head s3">
+        <div class="sec-title">ताजा समाचार</div>
+      </div>
+      <div class="news-overflow" id="newsOverflow">
+        <div class="news-track" id="newsTrack">
+          <div class="spin-wrap"><div class="spinner"></div></div>
+        </div>
+      </div>
+      <div class="news-dots" id="newsDots"></div>
+    </div>
+    <div style="height:14px"></div>
+  </div>
+</div>
+
+<!-- YEAR -->
+<div id="p-year" class="page"></div>
+
+<!-- SUBJECT -->
+<div id="p-subject" class="page"></div>
+
+<!-- COURSES -->
+<div id="p-courses" class="page">
+  <div class="content">
+    <div class="sec-head">
+      <div class="sec-title">सबै विषयहरू</div>
+    </div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px">
+      <div class="nd cf-chip" data-key="all"    style="width:auto;height:auto;border-radius:20px;padding:6px 13px;background:var(--glass-card);border:1px solid var(--glass-border);font-size:0.78rem;font-weight:700;cursor:pointer;backdrop-filter:blur(10px)" onclick="renderCourses('all')">सबै</div>
+      <div class="nd cf-chip" data-key="nepali"   style="width:auto;height:auto;border-radius:20px;padding:6px 13px;background:var(--glass-card);border:1px solid var(--glass-border);font-size:0.78rem;font-weight:700;cursor:pointer;backdrop-filter:blur(10px)" onclick="renderCourses('nepali')">📜 नेपाली</div>
+      <div class="nd cf-chip" data-key="english"  style="width:auto;height:auto;border-radius:20px;padding:6px 13px;background:var(--glass-card);border:1px solid var(--glass-border);font-size:0.78rem;font-weight:700;cursor:pointer;backdrop-filter:blur(10px)" onclick="renderCourses('english')">📗 English</div>
+      <div class="nd cf-chip" data-key="sanskrit" style="width:auto;height:auto;border-radius:20px;padding:6px 13px;background:var(--glass-card);border:1px solid var(--glass-border);font-size:0.78rem;font-weight:700;cursor:pointer;backdrop-filter:blur(10px)" onclick="renderCourses('sanskrit')">🕉️ संस्कृत</div>
+      <div class="nd cf-chip" data-key="vyakaran" style="width:auto;height:auto;border-radius:20px;padding:6px 13px;background:var(--glass-card);border:1px solid var(--glass-border);font-size:0.78rem;font-weight:700;cursor:pointer;backdrop-filter:blur(10px)" onclick="renderCourses('vyakaran')">✏️ व्याकरण</div>
+      <div class="nd cf-chip" data-key="jyotish"  style="width:auto;height:auto;border-radius:20px;padding:6px 13px;background:var(--glass-card);border:1px solid var(--glass-border);font-size:0.78rem;font-weight:700;cursor:pointer;backdrop-filter:blur(10px)" onclick="renderCourses('jyotish')">⭐ ज्योतिष</div>
+    </div>
+    <div id="coursesList"><div class="spin-wrap"><div class="spinner"></div></div></div>
+  </div>
+</div>
+
+<!-- NOTES -->
+<div id="p-notes" class="page">
+  <div class="content">
+    <div class="sec-head">
+      <div class="sec-title">मेरा नोटहरू</div>
+    </div>
+    <div id="notesList"></div>
+  </div>
+  <button class="fab" id="notesFab" title="नयाँ नोट">＋</button>
+</div>
+
+<!-- PROFILE -->
+<div id="p-profile" class="page">
+  <div class="content">
+    <div class="profile-hero s1">
+      <div class="p-avatar">👨‍🎓</div>
+      <div class="p-name">विद्यार्थी</div>
+      <div class="p-role">शास्त्री कक्षा पोर्टल</div>
+    </div>
+
+    <!-- Stats -->
+    <div class="sec-head"><div class="sec-title">तथ्याङ्क</div></div>
+    <div class="stats-grid s2" id="statsGrid"></div>
+
+    <!-- Settings -->
+    <div class="sec-head"><div class="sec-title">सेटिङहरू</div></div>
+
+    <div class="sett-group s3">
+      <div class="sett-group-lbl">प्रदर्शन</div>
+      <div class="sett-row" onclick="applyTheme(App&&App.theme==='dark'?'light':'dark')">
+        <div class="sett-left">
+          <div class="sett-ico" style="background:#1a1a2e;color:#ffd700">🌙</div>
+          <div><div class="sett-name">रात्रि मोड</div><div class="sett-desc">आँखाको लागि आरामदायक</div></div>
+        </div>
+        <div class="tog" id="darkToggle"><div class="tog-knob"></div></div>
+      </div>
+      <div class="sett-row">
+        <div class="sett-left">
+          <div class="sett-ico" style="background:#e8f5e9">🔤</div>
+          <div><div class="sett-name">अक्षरको आकार</div><div class="sett-desc" id="fontSizeLbl">16px</div></div>
+        </div>
+        <input type="range" id="fontSlider" min="14" max="20" value="16" class="font-slider" style="width:100px">
+      </div>
+    </div>
+
+    <div class="sett-group s4">
+      <div class="sett-group-lbl">Data</div>
+      <div class="sett-row" id="exportBtn">
+        <div class="sett-left">
+          <div class="sett-ico" style="background:#e3f2fd">📤</div>
+          <div><div class="sett-name">Backup Export</div><div class="sett-desc">सबै data download गर्नुस्</div></div>
+        </div>
+        <span style="color:var(--text-3)">→</span>
+      </div>
+      <div class="sett-row" onclick="document.getElementById('importInp').click()">
+        <div class="sett-left">
+          <div class="sett-ico" style="background:#f3e5f5">📥</div>
+          <div><div class="sett-name">Backup Import</div><div class="sett-desc">पहिलेको data फिर्ता ल्याउनुस्</div></div>
+        </div>
+        <span style="color:var(--text-3)">→</span>
+        <input type="file" id="importInp" accept=".json" style="display:none">
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="sec-head" style="margin-top:8px">
+      <div class="sec-title">पढ्ने इतिहास</div>
+      <button id="clearHistBtn" style="font-size:0.75rem;color:var(--text-3);background:none;border:none;cursor:pointer;font-family:var(--font)">सफा गर्नुस्</button>
+    </div>
+    <div id="historyList"></div>
+
+    <div class="sett-group" style="margin-top:14px">
+      <div class="sett-group-lbl">बारेमा</div>
+      <div class="sett-row">
+        <div class="sett-left">
+          <div class="sett-ico" style="background:#fff3e0">📚</div>
+          <div><div class="sett-name">शास्त्री कक्षा पोर्टल</div><div class="sett-desc">संस्करण २.०.०</div></div>
+        </div>
+        <span style="font-size:0.8rem;color:var(--text-3)">v2</span>
+      </div>
+      <div class="sett-row" onclick="window.open('https://github.com','_blank')">
+        <div class="sett-left">
+          <div class="sett-ico" style="background:#f5f5f5">🐙</div>
+          <div><div class="sett-name">GitHub Pages</div><div class="sett-desc">Source code</div></div>
+        </div>
+        <span style="color:var(--text-3)">→</span>
+      </div>
+    </div>
+    <div style="height:16px"></div>
+  </div>
+</div>
+
+<!-- ══════ BOTTOM NAV ══════ -->
+<nav class="bottom-nav">
+  <a class="nav-item on" data-page="home" href="#">
+    <div class="nav-pip"></div>
+    <div class="nav-ico">🏠</div>
+    <div class="nav-lbl">होम</div>
+  </a>
+  <a class="nav-item" data-page="courses" href="#">
+    <div class="nav-pip"></div>
+    <div class="nav-ico">🎓</div>
+    <div class="nav-lbl">विषयहरू</div>
+  </a>
+  <a class="nav-item" data-page="notes" href="#">
+    <div class="nav-pip"></div>
+    <div class="nav-ico">📝</div>
+    <div class="nav-lbl">नोट</div>
+  </a>
+  <a class="nav-item" data-page="profile" href="#">
+    <div class="nav-pip"></div>
+    <div class="nav-ico">👤</div>
+    <div class="nav-lbl">सेटिङ</div>
+  </a>
+</nav>
+
+<!-- ══════ MODALS ══════ -->
+
+<!-- News Modal -->
+<div class="overlay" id="newsModal" onclick="if(event.target===this)closeOverlay('newsModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div style="font-size:0.78rem;color:var(--text-3);margin-bottom:4px" id="newsModalDate"></div>
+    <div class="modal-title" id="newsModalTitle"></div>
+    <p id="newsModalBody" style="font-size:0.87rem;color:var(--text-2);line-height:1.85"></p>
+    <div class="modal-btns" style="margin-top:20px">
+      <button class="btn-s" style="width:100%" onclick="closeOverlay('newsModal')">बन्द गर्नुस्</button>
+    </div>
+  </div>
+</div>
+
+<!-- Note Modal -->
+<div class="overlay" id="noteModal" onclick="if(event.target===this)closeOverlay('noteModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="noteMTitle">नयाँ नोट</div>
+    <form id="noteForm">
+      <div class="f-group">
+        <label class="f-label">शीर्षक *</label>
+        <input class="f-input" id="nTitle" type="text" placeholder="नोटको शीर्षक..." required>
+      </div>
+      <div class="f-group">
+        <label class="f-label">सामग्री *</label>
+        <textarea class="f-textarea" id="nContent" placeholder="यहाँ लेख्नुस्..." required></textarea>
+      </div>
+      <div class="f-group">
+        <label class="f-label">विषय (ऐच्छिक)</label>
+        <input class="f-input" id="nSubject" type="text" placeholder="जस्तै: नेपाली साहित्य १">
+      </div>
+      <div class="modal-btns">
+        <button type="button" class="btn-s" id="closeNoteModal" onclick="closeOverlay('noteModal')">रद्द</button>
+        <button type="submit" class="btn-p">सुरक्षित गर्नुस्</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toastEl"></div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
